@@ -20,6 +20,7 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 
 
+/* iterate over accesspatterns and create the routes with appropiate db queries and param checks -> after that listen to port */
 
 
 
