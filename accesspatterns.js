@@ -1,7 +1,15 @@
-const accesspatterns = [
-	{ 
-		name: "login",
-		params: ["username", "password"],
-		query: "SELECT user_id BY username AND password;"
-	}
-];
+module.exports = () => { 
+	return [
+		{ 
+			name: "login",
+			params: ["username", "password"],
+			queries: ["SELECT user_id FROM users_login WHERE email = ? AND password = ?"],
+			description: "User login with basic authentication"
+		},
+		{ queries
+			name: "registration",
+			params: ["email", "username", "password"],
+			queries: ["FIND email, username, password;"]
+		}
+	]
+}();
