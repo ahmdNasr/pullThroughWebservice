@@ -1,7 +1,7 @@
 
 /* ------------------- imports node modules -------------------*/
 const express    = require('express')
-const underline  = require('underline')
+const _          = require('underline')
 const bodyParser = require('body-parser')
 const cassandra  = require('cassandra-driver');
 const morgan     = require('morgan')
@@ -22,6 +22,7 @@ app.use(morgan('dev'))
 
 /* iterate over accesspatterns and create the routes with appropiate db queries and param checks -> after that listen to port */
 
+accesspatterns.forEach((pattern) => console.log(pattern))
 
 
 
