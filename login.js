@@ -28,7 +28,7 @@ app.post('/login', (req, res) => {
 	const passwordHash = "";
 	
 
-	client.execute('SELECT user_id, firstname, lastname, profile_picture, username FROM user_by_email_and_password WHERE email= ? AND password = ?;', [email, password], function (err, result) {
+	client.execute('SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email= ? AND password = ?;', [email, password], function (err, result) {
 		if(err){
 			return res.status(500).send({ error: 'Database error!' })
 		}
