@@ -32,11 +32,15 @@ app.post('/login', (req, res) => {
 		if(err){
 			return res.status(500).send({ error: 'Database error!' })
 		}
-
-		var user = result.rows[0];
-		
-		res.json(user);
-		res.end();
+		else if(result.rowLength == 0){
+			res.json({ error: "Wrong credentials!"});
+			res.end();
+		}else{
+			var user = result.rows[0];
+			
+			res.json(user);
+			res.end();	
+		}
 	});
 })
 
