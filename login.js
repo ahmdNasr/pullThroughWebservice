@@ -23,11 +23,20 @@ app.use(morgan('dev'))
 // 
 app.post('/login', (req, res) => {
 
-
 })
 
 
+// connect client and listen to port 3000
+client.connect((err) => {
+	if (err) {
+		client.shutdown();
+		console.error('There was an error when connecting', err);
+	}
+	console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
 
 
-app.listen(3000, () => console.log('server ready!'))
+	// now that db is ready listen to the port
+	app.listen(3000, () => console.log('server ready!'))
+});
 
+process.on('exit', () => client.shutdown());
