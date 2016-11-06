@@ -22,13 +22,13 @@ app.use(morgan('dev'))
 // returns user_id and token ?
 // 
 app.post('/login', (req, res) => {
-	const username = req.body.username
+	const email = req.body.email
 	const password = req.body.password
 
 	const passwordHash = "";
 	
 
-	client.execute('SELECT user_id, firstname, lastname, profile_picture, username FROM user_by_email_and_password WHERE email= ? AND password = ?;', [username, password], function (err, result) {
+	client.execute('SELECT user_id, firstname, lastname, profile_picture, username FROM user_by_email_and_password WHERE email= ? AND password = ?;', [email, password], function (err, result) {
 		if(err){
 			return res.status(500).send({ error: 'Database error!' })
 		}
