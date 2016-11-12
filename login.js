@@ -16,12 +16,10 @@ const app    = express()
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 
+var loginUser = function (req, res) {
+	var loginDefered = Promise.defer();
 
-// POST
-// requires username and password
-// returns user_id and token ?
-// 
-app.post('/login', (req, res) => {
+
 	const email = req.body.email
 	const password = req.body.password
 
@@ -30,18 +28,23 @@ app.post('/login', (req, res) => {
 
 	client.execute('SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email= ? AND password = ?;', [email, password], function (err, result) {
 		if(err){
-			return res.status(500).send({ error: 'Database error!' })
-		}
-		else if(result.rowLength == 0){
-			res.json({ error: "Wrong credentials!"});
-			res.end();
+			loginDefered.reject(err);
 		}else{
-			var user = result.rows[0];
-			
-			res.json(user);
-			res.end();	
+			loginDefered.resolve(result.rowLength <= 1 ? result.rows[0] : result.rows);
 		}
 	});
+
+	return loginDefered.promise;
+}
+
+// POST
+// requires username and password
+// returns user_id and token ?
+// 
+app.post('/login', (req, res) => {
+	loginUser(req, res)
+	.then( (data) => { res.json(data); res.end() } )
+	.catch( (error) => { res.json(error); res.end() } ) // either way just return the response
 })
 
 
