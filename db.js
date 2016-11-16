@@ -11,3 +11,7 @@ var executeCQL = function(client, cql, params){
 
 	return deferedObject.promise
 }
+
+
+
+exports.executeCQL = executeCQL
