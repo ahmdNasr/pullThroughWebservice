@@ -8,7 +8,7 @@ var extractParamsFromRequest = function(paramNames, req){
 	let params = []
 
 	paramNames.forEach( (paramName) => {
-		let paramValue = req.body[paramName]
+		let paramValue = req.body[paramName] ? req.body[paramName] : paramsDefered.reject(new Error(`Parameter ${paramName} not found in request object.`))
 		params.push(paramValue)
 	})
 
@@ -25,7 +25,8 @@ var stdSelect = function(request, accesspattern, dbclient){
 		db.executeCQL(dbclient, cql, params)
 		  .then(selectDefered.resolve)
 		  .catch(selectDefered.reject)
-	})
+	}).catch(selectDefered.reject)
+	
 	return selectDefered.promise
 }
 
