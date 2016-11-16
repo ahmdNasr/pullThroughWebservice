@@ -9,8 +9,8 @@ const readJson   = require('read-json')
 
 /* ------------------- imports local folder -------------------*/
 //const accesspatterns = require('./accesspatterns')
-const config         = require('./config')
-const api 			 = require('./api.js')
+const config         = require('./domain/helpers/config')
+const api 			 = require('./domain/api.js')
 
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
@@ -48,7 +48,7 @@ function setup(accesspatterns){
 	return setupDefered.promise
 }
 
-readJson('./accesspatterns.json', (err, accesspatterns) => {
+readJson('./domain/helpers/accesspatterns.json', (err, accesspatterns) => {
 
 	setup(accesspatterns)
 	.then(() => {
