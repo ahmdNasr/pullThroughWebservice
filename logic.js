@@ -1,20 +1,29 @@
 const db = require('./db')
 
 
-// extracts the params from the request object 
-var getParams = function(req){
+// extracts the params from the request object in right order
+var extractParamsFromRequest = function(paramNames, request){
+	let paramsDefered = Promise.defer()
+	let params = []
 
+	paramNames.forEach( (paramName) => {
+		let paramValue = req.body[paramName]
+		params.push(paramValue)
+	})
+
+	paramsDefered.resolve(params)
+	return paramsDefered.promise
 }
 
 var stdSelect = function(request, accesspattern, dbclient){
 	let selectDefered = Promise.defer()
-
+	
 	let cql = accesspattern.query || accesspattern.queries[0]
-	let params = getParams(request, accesspattern)
-
-	db.executeCQL(dbclient, cql, params)
-	  .then(selectDefered.resolve)
-	  .catch(selectDefered.reject)
-
+	
+	extractParamsFromRequest(request, accesspattern.params).then( (params) => {
+		db.executeCQL(dbclient, cql, params)
+		  .then(selectDefered.resolve)
+		  .catch(selectDefered.reject)
+	})
 	return selectDefered.promise
 }
