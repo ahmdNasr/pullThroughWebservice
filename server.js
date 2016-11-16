@@ -9,9 +9,9 @@ const readJson   = require('read-json')
 
 /* ------------------- imports local folder -------------------*/
 //const accesspatterns = require('./accesspatterns')
-const config         = require('./domain/helpers/config')
+const config         = require('./domain/helpers/config.js')
 const api 			 = require('./domain/api.js')
-
+console.log(config)
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
 const app    = express()
@@ -30,10 +30,10 @@ function setup(accesspatterns){
 
 	accesspatterns.forEach( (pattern) => {
 
-		pattern.method 
-		? allRouterGenerated.push(api.generateRouter(pattern, client))
-		//return to end the function otherwise the code will get executed even though one api-route has an error 
-		: return setupDefered.reject(new Error(`Pattern (${pattern.name}) doesn't have a valid method definition!`))		
+		if(pattern.method) 
+			allRouterGenerated.push(api.generateRouter(pattern, client))
+		else 
+			return setupDefered.reject(new Error(`Pattern (${pattern.name}) doesn't have a valid method definition!`))		
 		
 	})
 
