@@ -2,14 +2,16 @@ module.exports = () => {
 	return [
 		{ 
 			name: "login",
+			method: "GET",
 			params: ["username", "password"],
 			queries: ["SELECT user_id FROM users_login WHERE email = ? AND password = ?"],
 			description: "User login with basic authentication"
 		},
 		{
 			name: "registration",
-			params: ["email", "username", "password"],
-			queries: ["FIND email, username, password;"]
+			method: "GET",
+			params: ["email", "password", "user_id"],
+			queries: ["INSERT INTO users_by_emal (email, password, user_id) VALUES (?, ?, ?)"]
 		}
 	]
 }();

@@ -13,40 +13,14 @@ const config         = require('./config')()
 const client = new cassandra.Client(config.db_connect)
 const app    = express()
 
+
+
+const apiRouter      = require('./routes/index')(client)
+
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 
-var loginUser = function (req, res) {
-	var loginDefered = Promise.defer();
-
-
-	const email = req.body.email
-	const password = req.body.password
-
-	const passwordHash = "";
-	
-
-	client.execute('SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email= ? AND password = ?;', [email, password], function (err, result) {
-		if(err){
-			loginDefered.reject(err);
-		}else{
-			loginDefered.resolve(result.rowLength <= 1 ? result.rows[0] : result.rows);
-		}
-	});
-
-	return loginDefered.promise;
-}
-
-// POST
-// requires username and password
-// returns user_id and token ?
-// 
-app.post('/login', (req, res) => {
-	loginUser(req, res)
-	.then( (data) => { res.json(data); res.end() } )
-	.catch( (error) => { res.json(error); res.end() } ) // either way just return the response
-})
-
+app.use(apiRouter)
 
 // connect client and listen to port 3000
 client.connect((err) => {
