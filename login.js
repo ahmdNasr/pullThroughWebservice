@@ -7,7 +7,7 @@ const cassandra  = require('cassandra-driver');
 const morgan     = require('morgan')
 
 /* ------------------- imports local folder -------------------*/
-const config         = require('./config')
+const config         = require('./config')()
 
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
