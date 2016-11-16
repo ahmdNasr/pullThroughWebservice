@@ -1,7 +1,7 @@
 
 var executeCQL = function(client, cql, params){
 
-	deferedObject = Promise.defer()
+	let deferedObject = Promise.defer()
 
 	client.execute(cql, params, (err, result) => {
 		err 
