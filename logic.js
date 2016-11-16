@@ -27,3 +27,6 @@ var stdSelect = function(request, accesspattern, dbclient){
 	})
 	return selectDefered.promise
 }
+
+
+exports.stdSelect = stdSelect
