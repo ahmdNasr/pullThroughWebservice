@@ -2,7 +2,7 @@
 const express = require('express')
 const logic = require('./logic')
 
-var generateRouter = function(accesspattern){
+var generateRouter = function(accesspattern, dbclient){
 	let genRouterDefered = Promise.defer()
 	let router = express.Router()
 
@@ -10,7 +10,7 @@ var generateRouter = function(accesspattern){
 	router[accesspattern.method.toLowerCase()]( `/${accesspattern.name}`, (req, res) => {
 		let logichandler = logic[accesspattern.name] || logic.stdSelect
 
-		logichandler()
+		logichandler(req, accesspattern, dbclient)
 		.then((data) => res.json(data).end() )
 		.catch((error) => res.json(error).end() )
 	})
