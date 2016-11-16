@@ -10,7 +10,6 @@ const morgan     = require('morgan')
 /* ------------------- imports local folder -------------------*/
 const accesspatterns = require('./accesspatterns')
 const config         = require('./config')
-const handler        = require('./apiHandler.js') 
 const api 			 = require('./api.js')
 
 /* ------------------- init variables -------------------*/
@@ -38,7 +37,7 @@ function setup(){
 		
 	})
 
-
+	// when all Promises are resolved which means alss 
 	Promise.all(allRouterGenerated)
 	.then( (routers) => routers.forEach((router) => app.use('/api', router)) )
 	.catch( (error) => console.log(error) /*log somehow*/)
@@ -65,9 +64,19 @@ setup()
 
 		res.end()
 	})
+	
+	client.connect((err) => {
+		if (err) {
+			client.shutdown();
+			console.error('There was an error when connecting', err);
+		}
+		console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
 
 
-	app.listen(3000, () => console.log('server ready!'))
+		// now that db is ready listen to the port
+		app.listen(3000, () => console.log('server ready!'))
+	});
+
 
 })
 .catch(console.log)
