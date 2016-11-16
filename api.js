@@ -7,15 +7,15 @@ var generateRouter = function(accesspattern){
 	let router = express.Router()
 
 	
-	router[accesspattern.method.toLowerCase()]( accesspattern.name, (req, res) => {
+	router[accesspattern.method.toLowerCase()]( `/${accesspattern.name}`, (req, res) => {
 		let logichandler = logic[accesspattern.name] || logic.stdSelect
 
 		logichandler()
-		.then(generateRouter.resolve)
-		.catch(generateRouter.reject)
+		.then((data) => res.json(data).end() )
+		.catch((error) => res.json(error).end() )
 	})
 
-	//genRouterDefered.resolve(router)
+	router ? genRouterDefered.resolve(router) : generateRouter.reject(new Error("Could not create Router"))
 
 	return genRouterDefered.promise
 }
