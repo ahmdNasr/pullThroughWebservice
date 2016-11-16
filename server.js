@@ -11,6 +11,7 @@ const morgan     = require('morgan')
 const accesspatterns = require('./accesspatterns')
 const config         = require('./config')
 const handler        = require('./apiHandler.js') 
+const api 			 = require('./api.js')
 
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
@@ -24,30 +25,24 @@ app.use(morgan('dev'))
 
 function setup(){
 
-	var setupDefered = Promise.defer();
+	var setupDefered = Promise.defer()
+	var allRouterGenerated = []
 
-	accesspatterns.forEach((pattern) => {
+
+	accesspatterns.forEach( (pattern) => {
+
+		pattern.method 
+		? allRouterGenerated.push(api.generateRouter(pattern, client))
+		//return to end the function otherwise the code will get executed even though one api-route has an error 
+		: return setupDefered.reject(new Error(`Pattern (${pattern.name}) doesn't have a valid method definition!`))		
 		
-		// add accesspattern.name to the app
-		const patternname = `/${pattern.name}`
-		switch(pattern.method){
-			case 'GET': 
-				app.get(patternname, handler(pattern)['get'])
-				break
-			case 'def':
-				app.post(patternname, handler.post)
-				break
-			case 'POST':
-				app.put(patternname, handler.put)
-				break
-			case 'POST':
-				app.delete(patternname, handler.delete)
-				break
-			default:
-				setupDefered.reject(new Error(`Pattern (${pattern.name}) doesn't have a valid method definition!`))
-		}
-
 	})
+
+
+	Promise.all(allRouterGenerated)
+	.then( (routers) => routers.forEach((router) => app.use('/api', router)) )
+	.catch( (error) => console.log(error) /*log somehow*/)
+
 
 	// resolve promise if everythin was alright
 	setupDefered.resolve()
