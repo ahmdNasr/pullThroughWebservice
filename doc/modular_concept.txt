@@ -15,7 +15,7 @@ db.js
 		
 	function executeCQL(client, cqlstatement){
 		execute 		 THEN
-		revoke(err) 	 OR CATCH
+		reject(err) 	 OR CATCH
 		resolve(result)
 
 		returns Promise
