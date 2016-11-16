@@ -3,7 +3,7 @@ const db = require('./db')
 
 
 // extracts the params from the request object in right order
-var extractParamsFromRequest = function(paramNames, request){
+var extractParamsFromRequest = function(paramNames, req){
 	let paramsDefered = Promise.defer()
 	let params = []
 
@@ -21,7 +21,7 @@ var stdSelect = function(request, accesspattern, dbclient){
 	
 	let cql = accesspattern.query || accesspattern.queries[0]
 	
-	extractParamsFromRequest(request, accesspattern.params).then( (params) => {
+	extractParamsFromRequest(accesspattern.params, request).then( (params) => {
 		db.executeCQL(dbclient, cql, params)
 		  .then(selectDefered.resolve)
 		  .catch(selectDefered.reject)
