@@ -1,0 +1,74 @@
+
+package.json
+accesspatterns.json				contains the accesspatterns definition for which all the queries are defined and all the accesspattern names too...
+server.js 						setup the server instance, calls all the other scripts, handels all the middleware, connection to db, ...
+/db
+	db.js				has function which executes a db query based on promises
+/api
+	api.js				generates routes for all the access patterns which call the accesspatterns-logic handler with the same name as route name
+/logic 			
+	logic.js			returns and object containing functions which make the logic for the api -> calling db-handlers, generating stuf ....
+								if no handlers are defined a basic handler with databse query and return will be used 
+
+
+db.js
+		
+	function executeCQL(client, cqlstatement){
+		execute 		 THEN
+		revoke(err) 	 OR CATCH
+		resolve(result)
+
+		returns Promise
+	}
+
+
+logic.js
+
+	{
+		<accesspattern.name> :function (req.body, accesspattern){
+			
+			A:
+			
+				prepare stuff // eg generate uuids and tokens; or wait for othe cqls
+
+				executeCQLs 			THEN
+
+			goto A UNTIL all done
+
+			revoke(result) 			OR CATCH
+			reject (error)
+
+			returns Promise
+		},	
+
+		standardLogic: function(req.body, accesspattern){ // accesspattern contains the cqls and stuff like that...
+			executeCQLs		 	THEN 
+			resolve result 		OR CATCH
+			reject err 
+
+			returns PROMISE
+		}
+	}
+
+api.js 
+	
+	app Property
+	logic = logic.js import 
+
+	function generateRoute(accesspattern){
+		app[accesspattern.method.toLowerCase]( () => {
+			
+			calls a logic handler 				THEN
+			res.json(error) AND reject()		OR CATCH
+			res.json(result) AND resolve()
+
+			res.end()
+		}) 
+
+		returns Promise
+	}
+
+
+
+
+
