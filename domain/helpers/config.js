@@ -16,8 +16,7 @@ const log4js = {
 			facility: 'local4',
 			hostname: '195.88.35.64',
 			port: 12203,
-			transport: 'UDP',
-			password:"NFJgPa2-fHel15b_K4v7jY3mpGASTQM0"
+			transport: 'UDP'
 		}
 	]
 }
