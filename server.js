@@ -11,7 +11,7 @@ const readJson   = require('read-json')
 //const accesspatterns = require('./accesspatterns')
 const config         = require('./domain/helpers/config.js')
 const api 			 = require('./domain/api.js')
-console.log(config)
+
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
 const app    = express()
@@ -23,7 +23,6 @@ app.use(morgan('dev'))
 /* iterate over accesspatterns and create the routes with appropiate db queries and param checks -> after that listen to port */
 
 function setup(accesspatterns){
-
 	var setupDefered = Promise.defer()
 	var allRouterGenerated = []
 
@@ -79,10 +78,23 @@ function postSetup(){
 
 }
 
-readJson('./domain/helpers/accesspatterns.json', (err, accesspatterns) => {
+function importAccesspatterns(){
+	var importDefered = Promise.defer()
+
+	readJson('./domain/helpers/accesspatterns.json', (err, accesspatterns) => {
+		err 
+		? importDefered.reject(err)
+		: importDefered.resolve(accesspatterns)
+	})
+
+	return importDefered.promise
+}
+
+importAccesspatterns()
+.then((accesspatterns) => {
 
 	setup(accesspatterns)
 	.then(postSetup)
 	.catch(console.log)
 
-})
+}).catch(console.log)
