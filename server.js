@@ -48,39 +48,41 @@ function setup(accesspatterns){
 	return setupDefered.promise
 }
 
+function postSetup(){
+	/* error handling */
+	app.use( (req, res) => {
+
+		res.setHeader('Content-Type', 'text/plain')
+
+		res.write('\nreq params:\n')
+		res.write(JSON.stringify(req.params, null, 2))
+
+
+		res.write('\nPOST body:\n')
+		res.write(JSON.stringify(req.body, null, 2))
+
+		res.end()
+	})
+	
+	client.connect((err) => {
+		if (err) {
+			client.shutdown();
+			console.error('There was an error when connecting', err);
+		}
+		console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
+
+
+		// now that db is ready listen to the port
+		app.listen(3000, () => console.log('server ready!'))
+	})
+
+
+}
+
 readJson('./domain/helpers/accesspatterns.json', (err, accesspatterns) => {
 
 	setup(accesspatterns)
-	.then(() => {
-
-		app.use( (req, res) => {
-
-			res.setHeader('Content-Type', 'text/plain')
-
-			res.write('\nreq params:\n')
-			res.write(JSON.stringify(req.params, null, 2))
-
-
-			res.write('\nPOST body:\n')
-			res.write(JSON.stringify(req.body, null, 2))
-
-			res.end()
-		})
-		
-		client.connect((err) => {
-			if (err) {
-				client.shutdown();
-				console.error('There was an error when connecting', err);
-			}
-			console.log('Connected to cluster with %d host(s): %j', client.hosts.length, client.hosts.keys());
-
-
-			// now that db is ready listen to the port
-			app.listen(3000, () => console.log('server ready!'))
-		});
-
-
-	})
+	.then(postSetup)
 	.catch(console.log)
 
 })
