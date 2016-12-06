@@ -91,10 +91,6 @@ function importAccesspatterns(){
 }
 
 importAccesspatterns()
-.then((accesspatterns) => {
-
-	setup(accesspatterns)
-	.then(postSetup)
-	.catch(console.log)
-
-}).catch(console.log)
+.then(setup)
+.then(postSetup)
+.catch(console.log)
