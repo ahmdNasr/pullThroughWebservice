@@ -1,0 +1,43 @@
+
+Sprache und Frameworks
+
+	Für die Umsetzung des Diplomprojektes wird NodeJS eingesetzt. Die Benutzte Nodejs Version ist v6.9.1.
+
+Beschreibung 
+
+	NodeJS ist eine JavaScript Laufzeitumgebung, welche auf Chrome's V8 JavaScript Engine basiert. Das führt dazu, dass NodeJS extrem schnell und ressourcensparend ist, was eine große Anzahl bestehender Clientverbindungen über das Netzwerk ermöglicht. NodeJS ist rund um die Eventloop aufgebaut, das heißt, dass für jede einkommende Verbindung kein neuer Thread gestartet wird. Mittels Nodejs können nur asynchrone Operationen durchgeführt werden, unabhängig davon, ob es ein HTTP-Zugriff, ein Zugriff auf die Festplatte oder der Aufbau zu der Datenbank ist. Durch diesen sehr wichtigen Aspekt wird ein Nodejs Script nie blockiert.
+	Die NodeJS Community ist die stärkste anwachsende Techcommunity in den letzten Jahren. Das hat den Vorteil, dass sehr viele Module geschrieben worden sind, allerdings hat es auch den Nachteil, dass ein Teil dieser Module nicht mehr von den Entwicklern gewartet wird. Zum Installieren von Nodejs Modulen eignet sich der node package manager (npm) hervorragend.
+
+Bibliotheken
+	
+	Die benutzten Bibliothekne sind:
+		express
+		body-parser
+		read-json
+		underscore
+		log4js
+		log4js-ain2
+		morgan
+		
+	Express (http://expressjs.com/)
+		Express ist ein minimalistisches Webframework für Nodejs, welches dafür bekannt ist kompakt und schnell zu sein. 
+	
+	Body-parser
+		Der body-parser ist ein Middleware von Express welches den Body der eingehend Anfragen parsed. Das ermöglicht den bequemen Zugriff auf den Request-Body durch request.body.beliebigerVaribalenName.
+
+	read-json 
+		Read-json wird benutzt um json-dateien auszulesen und in ein Objekt umzuformatieren. Es ist asynchron und blockt daher den Skript beim laden nicht.
+
+	Underscore (http://underscorejs.org/)
+		Underline ist eine Utility-Bibliothek, bietet daher sehr viele nütliche Funktionen wie das Mergen von Objekten oder das Funktionale iterieren über Arrays.
+
+	Log4js und Log4js-ain2
+		Zum Loggen setzen wir auf eine Nodejs Bibliothek welche die Features von Log4j in Javascript zur verfügung stellt.
+
+	Morgan 
+		Morgan ist eine logging-Framework welches in Express eingebunden werden kann. Es kann eingehende Anfragen in die Konsole schreiben, das ist vorallem beim Entwickeln des Webservice von großem Nutzen, da der Datenverkehr auf der Konsole geloggt wird.
+
+Wichtige Befehle
+	npm start / node server.js
+		Mittels npm start oder node server.js kann die Applikation gestartet werden.
+
