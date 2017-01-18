@@ -1,10 +1,25 @@
 [
 	{ 
+		"name": "loginJWT",
+		"method": "POST",
+		"params": ["email", "password"],
+		"queries": ["SELECT user_id, auth_token, firstname, lastname, profile_picture, username FROM users_by_email WHERE email = ? AND password = ?;", "UPDATE to set token ..."],
+		"description": "User login with JWT token authentication"
+	},
+	{ 
 		"name": "login",
 		"method": "POST",
 		"params": ["email", "password"],
 		"queries": ["SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email = ? AND password = ?;"],
 		"description": "User login with basic authentication"
+	},
+	{ 
+		"name": "testTable",
+		"method": "POST",
+		"params": [],
+		"queries": ["SELECT * FROM users_by_email;"],
+		"authRequired": true,
+		"description": "testing if table has some valid data"
 	},
 	{
 		"name": "sphereview",

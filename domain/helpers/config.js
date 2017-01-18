@@ -21,5 +21,8 @@ const log4js = {
 	]
 }
 
+const jwtSecret = "SEComundoRET"
+
 exports.db_connect = db_connect
 exports.log4js = log4js
+exports.jwtSecret = jwtSecret
