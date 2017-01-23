@@ -72,7 +72,7 @@ function postSetup(){
 
 
 		// now that db is ready listen to the port
-		app.listen(80, () => console.log('server ready!'))
+		app.listen(8080, () => console.log('server ready!'))
 	})
 
 
