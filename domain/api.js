@@ -2,6 +2,9 @@
 const express = require('express')
 const logic = require('./logic')
 
+const loggerFactory = require('./helpers/logger.js')
+const apiFatalLogger = loggerFactory("ERROR")
+
 const loginAccessPattern = {
 	params: ["email", "password"],
 	queries: ["SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email = ? AND password = ?;"]
@@ -26,7 +29,10 @@ var generateRouter = function(accesspattern, dbclient){
 			logic.stdSelect(req, loginAccessPattern, dbclient)
 			.then(doBasicAuth)
 			.then(next)
-			.catch((error) => res.json(error).end() )
+			.catch((error) => {
+				logger(`Error on Request: ${error}`)
+				res.json(error).end() 
+			})
 		})
 	}
 	
