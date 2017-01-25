@@ -16,6 +16,9 @@ const api 			 = require('./domain/api.js')
 const client = new cassandra.Client(config.db_connect)
 const app    = express()
 
+const loggerFactory = require('./domain/helpers/logger.js')
+const apiFatalLogger = loggerFactory("FATAL")
+
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 
@@ -39,7 +42,9 @@ function setup(accesspatterns){
 	// when all Promises are resolved which means alss 
 	Promise.all(allRouterGenerated)
 	.then( (routers) => routers.forEach((router) => app.use('/api', router)) )
-	.catch( (error) => console.log(error) /*log somehow*/)
+	.catch( (error) => {
+		console.log(error)
+	}) /*log somehow*/
 
 
 	// resolve promise if everythin was alright
@@ -72,7 +77,7 @@ function postSetup(){
 
 
 		// now that db is ready listen to the port
-		app.listen(80, () => console.log('server ready!'))
+		app.listen(8080, () => console.log('server ready!'))
 	})
 
 
@@ -93,4 +98,6 @@ function importAccesspatterns(){
 importAccesspatterns()
 .then(setup)
 .then(postSetup)
-.catch(console.log)
+.catch((error) => {
+	apiFatalLogger.fatal(`Generation of Routes Failed: ${error}`)
+})
