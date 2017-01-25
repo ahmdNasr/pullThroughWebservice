@@ -27,5 +27,13 @@
 		"params": ["user_id", "event_datetime"],
 		"queries": ["SELECT event_id, event_name, venue, title_picture, event_datetime FROM recommendations_by_user WHERE user_id = ? AND event_datetime > ?;"],
 		"description": "The recommendations for a specific user, identified by user_id."
+	},
+	{
+		"name": "profile",
+		"method": "POST",
+		"params": ["user_id"],
+		"queries": ["SELECT description, birthdate, username, isCompany, firstname, lastname FROM userdetails_by_user WHERE user_id = ?;"],
+		"authRequired": true,
+		"description": "Profile of the Users, needs Authentication"
 	}
 ]
