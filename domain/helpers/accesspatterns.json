@@ -35,5 +35,45 @@
 		"queries": ["SELECT description, birthdate, username, isCompany, firstname, lastname FROM userdetails_by_user WHERE user_id = ?;"],
 		"authRequired": true,
 		"description": "Profile of the Users, needs Authentication"
+	},
+	{
+		"name": "privateEvents",
+		"method": "POST",
+		"params": ["event_id"],
+		"queries": ["SELECT type, description, datetime, tags, prerequisites, firstname, lastname, email, username, user_id, venue, name FROM eventdetails_by_event_id WHERE event_id = ?;"],
+		"authRequired": true,
+		"description": "Details of one specific Event."
+	},
+	{
+		"name": "eventDetails",
+		"method": "POST",
+		"params": ["event_id"],
+		"queries": ["SELECT type, description, datetime, tags, prerequisites, firstname, lastname, email, username, user_id, venue, name FROM eventdetails_by_event_id WHERE event_id = ?;"],
+		"authRequired": true,
+		"description": "Details of one specific Event."
+	},
+	{
+		"name": "timeline",
+		"method": "POST",
+		"params": ["user_id", "event_datetime"],
+		"queries": ["SELECT event_name, event_id FROM timeline_by_user_and_datetime WHERE user_id = ? AND event_datetime >= ?;"],
+		"authRequired": true,
+		"description": "Timeline of a logged in User, the timeline displays already visited events."
+	},
+	{
+		"name": "notifications",
+		"method": "POST",
+		"params": ["recipient_id", "timestamp"],
+		"queries": ["SELECT notification_type, content, event_name, venue, event_description, notification_id, event_id, sender_id FROM notifications_by_recipient WHERE recipient_id = ? AND timestamp >= ?;"],
+		"authRequired": true,
+		"description": "Notifications for a specific user starting at a specific timestamp."
+	},
+	{
+		"name": "advancedSphereSearch",
+		"method": "POST",
+		"params": ["type", "tags", "event_datetime"],
+		"queries": ["SELECT event_id, event_name, venue, title_picture, event_datetime FROM event_by_tags_and_type_and_datetime WHERE type = ? AND tags CONTAINS ? AND event_datetime > ?;"],
+		"authRequired": true,
+		"description": "Searching for EventSpheres by type, tags and from a specific datetime."
 	}
 ]
