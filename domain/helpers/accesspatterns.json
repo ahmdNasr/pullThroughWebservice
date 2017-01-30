@@ -10,7 +10,7 @@
 		"name": "login",
 		"method": "POST",
 		"params": ["email", "password"],
-		"queries": ["SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email = ? AND password = ?;"],
+		"queries": ["SELECT user_id, email, firstname, lastname, profile_picture, username FROM users_by_email WHERE email = ? AND password = ?;"],
 		"description": "User login with basic authentication"
 	},
 	{ 
