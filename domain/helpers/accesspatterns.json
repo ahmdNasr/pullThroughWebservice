@@ -13,14 +13,6 @@
 		"queries": ["SELECT user_id, email, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;"],
 		"description": "User login with basic authentication"
 	},
-	{ 
-		"name": "testTable",
-		"method": "POST",
-		"params": [],
-		"queries": ["SELECT * FROM users_by_email;"],
-		"authRequired": true,
-		"description": "testing if table has some valid data"
-	},
 	{
 		"name": "sphereview",
 		"method": "POST",
