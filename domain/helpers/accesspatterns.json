@@ -13,19 +13,11 @@
 		"queries": ["SELECT user_id, email, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;"],
 		"description": "User login with basic authentication"
 	},
-	{ 
-		"name": "testTable",
-		"method": "POST",
-		"params": [],
-		"queries": ["SELECT * FROM users_by_email;"],
-		"authRequired": true,
-		"description": "testing if table has some valid data"
-	},
 	{
 		"name": "sphereview",
 		"method": "POST",
 		"params": ["user_id", "event_datetime"],
-		"queries": ["SELECT event_id, event_name, venue, title_picture, event_datetime FROM recommendations_by_user WHERE user_id = ? AND event_datetime > ?;"],
+		"queries": ["SELECT event_id, user_id, event_name, venue, type, event_datetime FROM recommendations_by_user_and_datetime WHERE user_id = ? AND event_datetime > ?;"],
 		"description": "The recommendations for a specific user, identified by user_id."
 	},
 	{
