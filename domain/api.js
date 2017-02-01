@@ -3,7 +3,7 @@ const express = require('express')
 const logic = require('./logic')
 
 const loggerFactory = require('./helpers/logger.js')
-const apiFatalLogger = loggerFactory("ERROR")
+const apiErrorLogger = loggerFactory("ERROR")
 
 const loginAccessPattern = {
 	params: ["email", "password"],
@@ -30,7 +30,7 @@ var generateRouter = function(accesspattern, dbclient){
 			.then(doBasicAuth)
 			.then(next)
 			.catch((error) => {
-				logger(`Error on Request: ${error}`)
+				apiErrorLogger(`Error on Request: ${error}`)
 				res.json(error).end() 
 			})
 		})
