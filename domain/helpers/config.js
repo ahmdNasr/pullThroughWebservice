@@ -4,8 +4,8 @@ const PlainTextAuthProvider = cassandra.auth.PlainTextAuthProvider
 
 const db_connect = { 
 	contactPoints: ['195.88.35.57','195.88.35.61','195.88.35.64'], 
-	keyspace: 'comundo',
-	authProvider: new PlainTextAuthProvider('std_harl', 'NFJgPa2-fHel15b_K4v7jY3mpGASTQM0' )
+	keyspace: 'comundo_prod',
+	authProvider: new PlainTextAuthProvider('std_harl', 'wfW4!S6V&A_A96_5fWc9+7#BRMo+XPCX' )
 }
 
 const log4js = {
