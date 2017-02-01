@@ -7,7 +7,7 @@ const apiErrorLogger = loggerFactory("ERROR")
 
 const loginAccessPattern = {
 	params: ["email", "password"],
-	queries: ["SELECT user_id, firstname, lastname, profile_picture, username FROM users_by_email WHERE email = ? AND password = ?;"]
+	queries: ["SELECT user_id, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;"]
 }
 
 var doBasicAuth = function(data){
@@ -30,8 +30,8 @@ var generateRouter = function(accesspattern, dbclient){
 			.then(doBasicAuth)
 			.then(next)
 			.catch((error) => {
-				apiErrorLogger(`Error on Request: ${error}`)
 				res.json(error).end() 
+				//apiErrorLogger(`Error on Request: ${error}`)
 			})
 		})
 	}
