@@ -1,5 +1,7 @@
 
 /* ------------------- imports node modules -------------------*/
+const fs         = require('fs')
+const https      = require('https')
 const express    = require('express')
 const _          = require('underline')
 const bodyParser = require('body-parser')
@@ -12,13 +14,27 @@ const readJson   = require('read-json')
 const config         = require('./domain/helpers/config.js')
 const api 			 = require('./domain/api.js')
 
+/* ------------------- certificates ------------------- */
+const isProd = process.env.NODE_ENV === "prod"
+const privateKeyPath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net/privkey.pem" : "./key.pm"
+const certificatePath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net/cert.pem" : "./server.crt"
+
+const privateKey = fs.readFileSync(privateKeyPath, 'utf8')
+const certificate = fs.readFileSync(certificatePath, 'utf8')
+
+const credentials = { key: privateKey, cert: certificate }
+
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
 const app    = express()
 
+const httpsServer = https.createServer(credentials, app)
+
+/* ------------------- logging ------------------- */
 const loggerFactory = require('./domain/helpers/logger.js')
 const apiFatalLogger = loggerFactory("FATAL")
 
+/* ------------------- app config ------------------- */
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 
@@ -77,7 +93,7 @@ function postSetup(){
 
 
 		// now that db is ready listen to the port
-		app.listen(8080, () => console.log('server ready!'))
+		httpsServer.listen(8443, () => console.log('https server ready on port 8443!'))
 	})
 
 
