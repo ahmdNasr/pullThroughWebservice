@@ -16,8 +16,8 @@ const api 			 = require('./domain/api.js')
 
 /* ------------------- certificates ------------------- */
 const isProd = process.env.NODE_ENV === "prod"
-const privateKeyPath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net/privkey.pem" : "./key.pem"
-const certificatePath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net/cert.pem" : "./server.crt"
+const privateKeyPath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/privkey.pem" : "./key.pem"
+const certificatePath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/cert.pem" : "./server.crt"
 
 const privateKey = fs.readFileSync(privateKeyPath, 'utf8')
 const certificate = fs.readFileSync(certificatePath, 'utf8')
