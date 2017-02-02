@@ -16,8 +16,8 @@ const api 			 = require('./domain/api.js')
 
 /* ------------------- certificates ------------------- */
 const isProd = process.env.NODE_ENV === "prod"
-const privateKeyPath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net/privkey.pem" : "./key.pm"
-const certificatePath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net/cert.pem" : "./server.crt"
+const privateKeyPath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/privkey.pem" : "./key.pem"
+const certificatePath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/cert.pem" : "./server.crt"
 
 const privateKey = fs.readFileSync(privateKeyPath, 'utf8')
 const certificate = fs.readFileSync(certificatePath, 'utf8')
@@ -57,7 +57,7 @@ function setup(accesspatterns){
 
 	// when all Promises are resolved which means alss 
 	Promise.all(allRouterGenerated)
-	.then( (routers) => routers.forEach((router) => app.use('/api', router)) )
+	.then( (routers) => app.use('/api', routers) )
 	.catch( (error) => {
 		console.log(error)
 	}) /*log somehow*/
@@ -93,7 +93,7 @@ function postSetup(){
 
 
 		// now that db is ready listen to the port
-		httpsServer.listen(443, () => console.log('https server ready on port 443!'))
+		httpsServer.listen(8443, () => console.log('https server ready on port 8443!'))
 	})
 
 
