@@ -57,7 +57,7 @@ function setup(accesspatterns){
 
 	// when all Promises are resolved which means alss 
 	Promise.all(allRouterGenerated)
-	.then( (routers) => routers.forEach((router) => app.use('/api', router)) )
+	.then( (routers) => app.use('/api', routers) )
 	.catch( (error) => {
 		console.log(error)
 	}) /*log somehow*/
