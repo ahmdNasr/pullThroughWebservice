@@ -30,7 +30,7 @@ var generateRouter = function(accesspattern, dbclient){
 			.then(doBasicAuth)
 			.then(next)
 			.catch((error) => {
-				res.json(error).end() 
+				res.status(401).json(error).end() // 401 -> Unauthorized
 				//apiErrorLogger(`Error on Request: ${error}`)
 			})
 		})
@@ -40,8 +40,8 @@ var generateRouter = function(accesspattern, dbclient){
 		let logichandler = logic[accesspattern.name] || logic.stdSelect
 
 		logichandler(req, accesspattern, dbclient)
-		.then((data) => res.json(data).end() )
-		.catch((error) => res.json(error).end() )
+		.then((data) => res.status(200).json(data).end() ) // 200 -> OK
+		.catch((error) => res.status(500).json(error).end() ) // 500 -> Internal Server Error
 	})
 
 	router ? genRouterDefered.resolve(router) : generateRouter.reject(new Error("Could not create Router"))
