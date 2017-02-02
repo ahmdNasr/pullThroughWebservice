@@ -18,11 +18,19 @@ const api 			 = require('./domain/api.js')
 const isProd = process.env.NODE_ENV === "prod"
 const privateKeyPath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/privkey.pem" : "./key.pem"
 const certificatePath = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/cert.pem" : "./server.crt"
+const fullchain1Path = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/fullchain1.pem" : "./chain.crt"
+const fullchain2Path = isProd ? "/etc/letsencrypt/live/alexandermuellner2.customers.typoheads.net-0003/fullchain2.pem" : "./chain.crt"
 
 const privateKey = fs.readFileSync(privateKeyPath, 'utf8')
 const certificate = fs.readFileSync(certificatePath, 'utf8')
+const fullchain1 = fs.readFileSync(fullchain1Path, 'utf8')
+const fullchain2 = fs.readFileSync(fullchain2Path, 'utf8')
 
-const credentials = { key: privateKey, cert: certificate }
+const credentials = { key: privateKey, cert: certificate, ca: [
+            fullchain1, 
+            fullchain2
+        ] }
+//const credentials = { key: privateKey, cert: certificate, chain: chain }
 
 /* ------------------- init variables -------------------*/
 const client = new cassandra.Client(config.db_connect)
@@ -93,7 +101,7 @@ function postSetup(){
 
 
 		// now that db is ready listen to the port
-		httpsServer.listen(8443, () => console.log('https server ready on port 8443!'))
+		httpsServer.listen(8080, () => console.log('https server ready on port 8080!'))
 	})
 
 
