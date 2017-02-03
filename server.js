@@ -41,10 +41,18 @@ const httpsServer = https.createServer(credentials, app)
 /* ------------------- logging ------------------- */
 const loggerFactory = require('./domain/helpers/logger.js')
 const apiFatalLogger = loggerFactory("FATAL")
+const apiCallLogger = loggerFactory("DEBUG")
+
+const applicationLogger = morgan('combined', {
+  "stream": {
+    write: function(str) { apiCallLogger.debug(str); }
+  }
+});
 
 /* ------------------- app config ------------------- */
 app.use(bodyParser.json())
 app.use(morgan('dev'))
+app.use(applicationLogger)
 
 
 /* iterate over accesspatterns and create the routes with appropiate db queries and param checks -> after that listen to port */
