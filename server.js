@@ -45,7 +45,6 @@ function setup(accesspatterns){
 	var setupDefered = Promise.defer()
 	var allRouterGenerated = []
 
-
 	accesspatterns.forEach( (pattern) => {
 
 		if(pattern.method) 
@@ -57,14 +56,15 @@ function setup(accesspatterns){
 
 	// when all Promises are resolved which means alss 
 	Promise.all(allRouterGenerated)
-	.then( (routers) => app.use('/api', routers) )
+	.then( (routers) => {
+		app.use('/api', routers) 
+		setupDefered.resolve()	
+	})
 	.catch( (error) => {
 		console.log(error)
 	}) /*log somehow*/
 
-
-	// resolve promise if everythin was alright
-	setupDefered.resolve()
+	
 	return setupDefered.promise
 }
 
