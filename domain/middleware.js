@@ -6,22 +6,14 @@ const loginAccessPattern = {
 
 var doBasicAuth = function(data){
 	let authDefered = Promise.defer()
-	console.log("doBasicAuth"+ data)
-	data 
+	console.log("doBasicAuth...")
+	data && Object.keys(obj).length === 0
 	? authDefered.resolve() 
 	: authDefered.reject({ status: 500, errorMessage: "This query needs authentication!" })
 
 	return authDefered.promise
 }
 
-const authentication = function(req, res, next) {
-	logic.stdSelect(req, loginAccessPattern, dbclient)
-		.then(doBasicAuth)
-		.then(next)
-		.catch((error) => {
-			res.status(401).json(error).end() // 401 -> Unauthorized
-			//apiErrorLogger(`Error on Request: ${error}`)
-		})
-}
+const authentication = 1
 
 exports.authentication = authentication
