@@ -18,6 +18,7 @@
 		"method": "POST",
 		"params": ["user_id", "event_datetime"],
 		"queries": ["SELECT event_id, user_id, event_name, venue, type, event_datetime FROM recommendations_by_user_and_datetime WHERE user_id = ? AND event_datetime > ?;"],
+		"authRequired": true,
 		"description": "The recommendations for a specific user, identified by user_id."
 	},
 	{

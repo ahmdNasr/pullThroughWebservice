@@ -1,7 +1,7 @@
 'use strict'
 
 var executeCQL = function(client, cql, params){
-console.log(params)
+
 	let deferedObject = Promise.defer()
 
 	client.execute(cql, params,  { prepare: true }, (err, result) => {
