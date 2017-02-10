@@ -3,7 +3,6 @@
 const fs         = require('fs')
 const https      = require('https')
 const express    = require('express')
-const _          = require('underline')
 const bodyParser = require('body-parser')
 const cassandra  = require('cassandra-driver');
 const morgan     = require('morgan')

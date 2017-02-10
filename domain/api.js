@@ -8,6 +8,7 @@ const loggerFactory = require('./helpers/logger.js')
 const apiErrorLogger = loggerFactory("ERROR")
 
 const loginAccessPattern = {
+	isAuthPattern: true,
 	params: ["email", "password"],
 	queries: ["SELECT user_id, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;"]
 }
