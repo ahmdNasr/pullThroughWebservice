@@ -100,7 +100,7 @@ function postSetup(){
 
 
 		// now that db is ready listen to the port
-		httpsServer.listen(8443, () => console.log('https server ready on port 8443!'))
+		httpsServer.listen(8080, () => console.log('https server ready on port 8080!'))
 	})
 
 
