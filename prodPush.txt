@@ -1,0 +1,1 @@
+Diese Datei soll einen Test-Commit zum Testen der Continious Integration Strategie bieten. 
