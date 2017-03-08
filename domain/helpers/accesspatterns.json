@@ -2,19 +2,19 @@
 	{ 
 		"name": "register",
 		"method": "POST",
-		"params": ["email", "password", "firstname", "lastname", "username", "description", "birthdate", "username", "isCompany"],
+		"params": ["email", "password", "firstname", "lastname", "username", "description", "birthdate", "isCompany"],
 		"queries": [ 
 			{
-				"query": "INSERT INTO users_by_email(email, password, firstname, lastname, username) VALUES(?, ?, ?, ?, ?) ",
-				"params": ["email", "password", "firstname", "lastname", "username"]
+				"query": "INSERT INTO users_by_email(email, password, user_id, firstname, lastname, username) VALUES(?, ?, ?, ?, ?, ?);",
+				"params": ["email", "password", "!!!!!!!!!!!!!!!generateUUID", "firstname", "lastname", "username"]
 			},
 			{
-				"query": "INSERT INTO userdetails_by_user(description, birthdate, username, isCompany, firstname, lastname) VALUES(?, ?, ?, ?, ?, ?) ",
-				"params": ["description", "birthdate", "username", "isCompany", "firstname", "lastname"]
+				"query": "INSERT INTO userdetails_by_user(user_id, description, birthdate, username, isCompany, firstname, lastname) VALUES(?, ?, ?, ?, ?, ?, ?);",
+				"params": ["!!!!!!!!!!!!!!!generateUUID", "description", "birthdate", "username", "isCompany", "firstname", "lastname"]
 			},
 			{
-				"query": "INSERT INTO user_by_username(firstname, lastname, description) VALUES(?, ?, ?) ",
-				"params": ["firstname", "lastname", "description"]
+				"query": "INSERT INTO user_by_username(username, firstname, lastname, description) VALUES(?, ?, ?, ?);",
+				"params": ["username", "firstname", "lastname", "description"]
 			}
 		],
 		"isBatchPattern": true, 

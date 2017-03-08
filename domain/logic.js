@@ -3,6 +3,7 @@ const db = require('./db')
 const jwt = require('jsonwebtoken')
 const base64 = require('base-64')
 const utf8 = require('utf8')
+const uuidV1 = require('uuid/v1');
 
 const decodeBase64Auth = (encoded) => {
 	const bytes = base64.decode(encoded)
@@ -68,14 +69,28 @@ var stdSelect = function(request, accesspattern, dbclient){
 	return selectDefered.promise
 }
 
+const generators = {
+	generateUUID: () => {
+		return uuidV1() // !!!!!!!!!!!!!!!!!!!!!!!!!!!! change 
+	}
+}
+
 // get index of param by paramName from accesspattern.params
 // get param value by index
 // push to params array		
 const buildParamArray = (accesspattern, allParams, substituteParamNames) => {
 	const params = []
 	substituteParamNames.forEach( pName => {
-		const index = accesspattern.params.indexOf(pName)
-		const paramValue = allParams[index]
+		let matchesGen = pName.match(/^\!+(\w+)$/) // matches !!!!!!!!!!generateUUID for example 
+		let paramValue;
+		if ( matchesGen ) {
+			const genFunctionName = matchesGen[1] // second element
+			paramValue = generators[genFunctionName]()
+		} else {
+			const index = accesspattern.params.indexOf(pName)
+			paramValue = allParams[index]
+		}
+
 		params.push(paramValue)
 	})
 	return params
@@ -83,24 +98,22 @@ const buildParamArray = (accesspattern, allParams, substituteParamNames) => {
 
 var stdBatch = function(request, accesspattern, dbclient){
 	let batchDefered = Promise.defer()
-
-		extractParamsFromRequest(accesspattern, request)
-		.then( (allParams) => {
-			
-			let cqls = accesspattern.queries.map(cql => {
-				const query = cql.query
-				const paramNames = cql.params
-				
-				const paramValues = buildParamArray(accesspattern, allParams, substituteParamNames)
-				
-				return 	{ query: query, params: paramValues }
-			})
-			
-			return db.batchCQL(dbclient, cqls, params)					
-		})
-		.then(batchDefered.resolve)
-		.catch(batchDefered.reject)
 	
+	extractParamsFromRequest(accesspattern, request)
+	.then( (allParams) => {
+		let cqls = accesspattern.queries.map(cql => {
+			const query = cql.query
+			const paramNames = cql.params
+			
+			const paramValues = buildParamArray(accesspattern, allParams, paramNames)
+			
+			return 	{ query: query, params: paramValues }
+		})
+		return db.batchCQL(dbclient, cqls)					
+	})
+	.then(batchDefered.resolve)
+	.catch(batchDefered.reject)
+
 	
 	return batchDefered.promise
 }
