@@ -17,6 +17,7 @@
 				"params": ["firstname", "lastname", "description"]
 			}
 		],
+		"isBatchPattern": true, 
 		"description": "User registration accesspattern."
 	},
 	{ 

@@ -107,3 +107,4 @@ var stdBatch = function(request, accesspattern, dbclient){
 
 
 exports.stdSelect = stdSelect
+exports.stdBatch = stdBatch
