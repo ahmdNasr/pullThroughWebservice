@@ -60,13 +60,11 @@ var stdSelect = function(request, accesspattern, dbclient){
 
 	let cql = accesspattern.query || accesspattern.queries[0]
 	
-	extractParamsFromRequest(accesspattern, request).then( (params) => {
-	
-		db.executeCQL(dbclient, cql, params)
-		  .then(selectDefered.resolve)
-		  .catch(selectDefered.reject)
-	}).catch(selectDefered.reject)
-	
+	extractParamsFromRequest(accesspattern, request)
+	.then( params => db.executeCQL(dbclient, cql, params) )
+	.then(selectDefered.resolve)
+	.catch(selectDefered.reject)
+
 	return selectDefered.promise
 }
 
@@ -98,10 +96,9 @@ var stdBatch = function(request, accesspattern, dbclient){
 				return 	{ query: query, params: paramValues }
 			})
 			
-			db.batchCQL(dbclient, cqls, params)
-			.then(batchDefered.resolve)
-			.catch(batchDefered.reject)					
+			return db.batchCQL(dbclient, cqls, params)					
 		})
+		.then(batchDefered.resolve)
 		.catch(batchDefered.reject)
 	
 	
