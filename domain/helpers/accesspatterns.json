@@ -1,10 +1,23 @@
 [
 	{ 
-		"name": "loginJWT",
+		"name": "register",
 		"method": "POST",
-		"params": ["email", "password"],
-		"queries": ["SELECT user_id, auth_token, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;", "UPDATE to set token ..."],
-		"description": "User login with JWT token authentication"
+		"params": ["email", "password", "firstname", "lastname", "username", "description", "birthdate", "username", "isCompany"],
+		"queries": [ 
+			{
+				"query": "INSERT INTO users_by_email(email, password, firstname, lastname, username) VALUES(?, ?, ?, ?, ?) ",
+				"params": ["email", "password", "firstname", "lastname", "username"]
+			},
+			{
+				"query": "INSERT INTO userdetails_by_user(description, birthdate, username, isCompany, firstname, lastname) VALUES(?, ?, ?, ?, ?, ?) ",
+				"params": ["description", "birthdate", "username", "isCompany", "firstname", "lastname"]
+			},
+			{
+				"query": "INSERT INTO user_by_username(firstname, lastname, description) VALUES(?, ?, ?) ",
+				"params": ["firstname", "lastname", "description"]
+			}
+		],
+		"description": "User registration accesspattern."
 	},
 	{ 
 		"name": "login",
