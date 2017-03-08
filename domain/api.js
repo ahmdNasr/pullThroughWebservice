@@ -39,8 +39,12 @@ var generateRouter = function(accesspattern, dbclient){
 				})
 		})
 	}
-	router[accesspattern.method.toLowerCase()]( `/${accesspattern.name}`, (req, res) => {
-		let logichandler = logic[accesspattern.name] || logic.stdSelect
+
+	const method = accesspattern.method.toLowerCase()
+	const isSelectPattern = method == 'get'
+
+	router[method]( `/${accesspattern.name}`, (req, res) => {
+		let logichandler = logic[accesspattern.name] || isSelectPattern ? logic.stdSelect : logic.stdBatch
 
 		logichandler(req, accesspattern, dbclient)
 		.then((data) => res.status(200).json(data).end() ) // 200 -> OK
