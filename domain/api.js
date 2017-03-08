@@ -41,10 +41,11 @@ var generateRouter = function(accesspattern, dbclient){
 	}
 
 	const method = accesspattern.method.toLowerCase()
-	const isSelectPattern = method == 'get'
-
+	const isBatchPattern = accesspattern.isBatchPattern
+	console.log("isBatchPattern " + isBatchPattern)
 	router[method]( `/${accesspattern.name}`, (req, res) => {
-		let logichandler = logic[accesspattern.name] || isSelectPattern ? logic.stdSelect : logic.stdBatch
+		let logichandler = logic[accesspattern.name] || ( isBatchPattern ?  logic.stdBatch : logic.stdSelect ) 
+		console.log(accesspattern.name, logichandler)
 
 		logichandler(req, accesspattern, dbclient)
 		.then((data) => res.status(200).json(data).end() ) // 200 -> OK
