@@ -13,6 +13,11 @@ var executeCQL = function(client, cql, params){
 	return deferedObject.promise
 }
 
-
+const batchCQL = function(client, cqls, params){
+	let deferedObject = Promise.defer()
+	client.batch(cqls, { prepare: true }, deferedObject.resolve) // callback has 1 param -> result
+	return deferedObject.promise
+}
 
 exports.executeCQL = executeCQL
+exports.batchCQL = batchCQL
