@@ -70,4 +70,43 @@ var stdSelect = function(request, accesspattern, dbclient){
 	return selectDefered.promise
 }
 
+// get index of param by paramName from accesspattern.params
+// get param value by index
+// push to params array		
+const buildParamArray = (accesspattern, allParams, substituteParamNames) => {
+	const params = []
+	substituteParamNames.forEach( pName => {
+		const index = accesspattern.params.indexOf(pName)
+		const paramValue = allParams[index]
+		params.push(paramValue)
+	})
+	return params
+}
+
+var stdBatch = function(request, accesspattern, dbclient){
+	let batchDefered = Promise.defer()
+
+		extractParamsFromRequest(accesspattern, request)
+		.then( (allParams) => {
+			
+			let cqls = accesspattern.queries.map(cql => {
+				const query = cql.query
+				const paramNames = cql.params
+				
+				const paramValues = buildParamArray(accesspattern, allParams, substituteParamNames)
+				
+				return 	{ query: query, params: paramValues }
+			})
+			
+			db.batchCQL(dbclient, cqls, params)
+			.then(batchDefered.resolve)
+			.catch(batchDefered.reject)					
+		})
+		.catch(batchDefered.reject)
+	
+	
+	return batchDefered.promise
+}
+
+
 exports.stdSelect = stdSelect
