@@ -88,7 +88,6 @@
 		"method": "GET",
 		"params": ["username"],
 		"queries": ["SELECT firstname, lastname, description, profile_picture FROM user_by_username WHERE username = ?;"],
-		"authRequired": true,
 		"description": "Searching for users by their username."
 	}
 ]
