@@ -75,17 +75,26 @@ const generators = {
 	}
 }
 
+const generatorTMPValues = {}
+
 // get index of param by paramName from accesspattern.params
 // get param value by index
 // push to params array		
-const buildParamArray = (accesspattern, allParams, substituteParamNames) => {
+const buildParamArray = (accesspattern, indexOfQuery, allParams, substituteParamNames) => {
 	const params = []
 	substituteParamNames.forEach( pName => {
 		let matchesGen = pName.match(/^\!+(\w+)$/) // matches !!!!!!!!!!generateUUID for example 
 		let paramValue;
 		if ( matchesGen ) {
 			const genFunctionName = matchesGen[1] // second element
-			paramValue = generators[genFunctionName]()
+
+			if ( indexOfQuery == 0 ) { // firstGeneration -> needs to call generator
+				paramValue = generators[genFunctionName]()
+				generatorTMPValues[genFunctionName] = paramValue // set/replace value
+			} else {
+				paramValue = generatorTMPValues[genFunctionName]
+			}
+			
 		} else {
 			const index = accesspattern.params.indexOf(pName)
 			paramValue = allParams[index]
@@ -101,11 +110,11 @@ var stdBatch = function(request, accesspattern, dbclient){
 	
 	extractParamsFromRequest(accesspattern, request)
 	.then( (allParams) => {
-		let cqls = accesspattern.queries.map(cql => {
+		let cqls = accesspattern.queries.map( (cql, indexOfQuery)=> {
 			const query = cql.query
 			const paramNames = cql.params
 			
-			const paramValues = buildParamArray(accesspattern, allParams, paramNames)
+			const paramValues = buildParamArray(accesspattern, indexOfQuery, allParams, paramNames)
 			
 			return 	{ query: query, params: paramValues }
 		})
