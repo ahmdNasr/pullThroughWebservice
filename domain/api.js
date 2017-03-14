@@ -2,7 +2,6 @@
 const express = require('express')
 const fs = require('fs')
 const logic = require('./logic')
-//const middleware = require('./middleware')
 
 const loggerFactory = require('./helpers/logger.js')
 const apiErrorLogger = loggerFactory("ERROR")
