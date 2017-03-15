@@ -1,5 +1,19 @@
 [
 	{ 
+		"name": "login",
+		"method": "POST",
+		"params": ["email", "password"],
+		"queries": ["SELECT user_id, email, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;"],
+		"description": "User login with basic authentication"
+	},
+	{
+		"name": "usernameExists",
+		"method": "GET",
+		"params": ["username"],
+		"queries": ["SELECT count(*) FROM user_by_username WHERE username = ?;"],
+		"description": "Searching for users by their username."
+	},
+	{ 
 		"name": "register",
 		"method": "POST",
 		"params": ["email", "password", "firstname", "lastname", "username", "description", "birthdate", "isCompany"],
@@ -19,13 +33,6 @@
 		],
 		"isBatchPattern": true, 
 		"description": "User registration accesspattern."
-	},
-	{ 
-		"name": "login",
-		"method": "POST",
-		"params": ["email", "password"],
-		"queries": ["SELECT user_id, email, firstname, lastname, username FROM users_by_email WHERE email = ? AND password = ?;"],
-		"description": "User login with basic authentication"
 	},
 	{
 		"name": "sphereview",
