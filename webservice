@@ -1,6 +1,7 @@
 #!/bin/sh
 
-result=`ps aux | grep -i "node" | grep -v "grep" | wc -l`
+#result=`ps aux | grep -i "node" | grep -v "grep" | wc -l`
+result=`ps | grep -i "node" | grep -v "grep" | wc -l`
 
 case "$1" in
 "start")
@@ -8,7 +9,7 @@ if [ $result -ge 1 ]
    then
         echo "already started, nothing to do!"
    else
-        cd /home/centos/comundo_webservice
+        cd /home/node/comundo_webservice 
         node . > webservice.log 2> webservice-err.log &
 	echo "started now"
 fi
@@ -26,11 +27,11 @@ fi
 if [ $result -ge 1 ]
    then
         /usr/bin/pkill node
-        cd /home/centos/comundo_webservice
+        cd /home/node/comundo_webservice 
         node . > webservice.log 2> webservice-err.log & 
 	echo "stopped and restarted"
    else 
-        cd /home/centos/comundo_webservice
+        cd /home/node/comundo_webservice 
         node . > webservice.log 2> webservice-err.log & 
 	echo "wasn't running, started now!"
 fi
@@ -48,7 +49,7 @@ if [ $result -ge 1 ]
    then
         echo "already started, nothing to do!"
    else
-        cd /home/centos/comundo_webservice
+        cd /home/node/comundo_webservice
         node . > webservice.log 2> webservice-err.log & 
         echo "started now"
 fi
