@@ -37,7 +37,7 @@ const patternToMarkdown = (ap) => {
 	const auth = ap.authRequired ? "Authentication is required!" : "Authentication is NOT required!"
 	
 	const params = toList(ap.params)
-	const queries = toList(ap.queries)
+	const queries = toList(ap.isBatchPattern ? ap.queries.map( q => q.query ) : ap.queries)
 	// iterate over params and description to extract them using forEach
 	return [
 		heading,
