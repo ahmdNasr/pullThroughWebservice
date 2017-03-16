@@ -84,9 +84,9 @@ Authentication is NOT required!
 ###### queries
 
 
-* [object Object]
-* [object Object]
-* [object Object]
+* INSERT INTO users_by_email(email, password, user_id, firstname, lastname, username) VALUES(?, ?, ?, ?, ?, ?);
+* INSERT INTO userdetails_by_user(user_id, description, birthdate, username, isCompany, firstname, lastname) VALUES(?, ?, ?, ?, ?, ?, ?);
+* INSERT INTO user_by_username(username, firstname, lastname, description) VALUES(?, ?, ?, ?);
 
 
 ## Sphereview
