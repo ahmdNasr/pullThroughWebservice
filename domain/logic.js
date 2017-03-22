@@ -43,7 +43,7 @@ var extractParamsFromRequest = function(accesspattern, req){
 
 		paramNames.forEach( (paramName) => {
 			let paramValue = accesspattern.method.toUpperCase() == "GET" ? fetchFromQuery(req, paramName) : fetchFromBody(req, paramName)
-			params.push(paramValue)
+			params.push(paramName == 'email' ? paramValue.toLowerCase() : paramValue)
 		})
 
 	} else{
