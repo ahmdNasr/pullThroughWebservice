@@ -85,10 +85,10 @@
 	{
 		"name": "advancedSphereSearch",
 		"method": "GET",
-		"params": ["type", "tags", "event_datetime"],
-		"queries": ["SELECT event_id, event_name, venue, title_picture, event_datetime FROM event_by_tags_and_type_and_datetime WHERE type = ? AND tags CONTAINS ? AND event_datetime > ?;"],
+		"params": ["type", "venue", "tagsContains"],
+		"queries": ["SELECT * from comundo_prod.eventdetails_by_event_id where type = ? and venue = ? and tags contains ? allow filtering;"],
 		"authRequired": true,
-		"description": "Searching for EventSpheres by type, tags and from a specific datetime."
+		"description": "Searching for EventSpheres by type, venue and tagsContains from a specific datetime."
 	},
 	{
 		"name": "primitiveUserSearch",
