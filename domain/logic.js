@@ -12,6 +12,25 @@ const decodeBase64Auth = (encoded) => {
 	return emailAndPassword
 } 
 
+const fetchFromQuery = (req, paramName) => {
+	return req.query[paramName] 
+	? req.query[paramName] 
+	: paramsDefered.reject(new Error(`Parameter ${paramName} not found in request.query object.`))
+}
+
+const fetchFromBody = (req, paramName) => {
+	return req.body[paramName] 
+	? req.body[paramName] 
+	: paramsDefered.reject(new Error(`Parameter ${paramName} not found in request.body object.`))
+}
+
+const fetchAuthFromHeaders = (req) => {
+	return req.headers.authorization 
+	? decodeBase64Auth(req.headers.authorization.split(' ')[1])
+	: paramsDefered.reject(new Error(`Authorization not provided in headers!`))
+}
+
+
 // extracts the params from the request object in right order
 var extractParamsFromRequest = function(accesspattern, req){
 	//console.log(accesspattern)
@@ -20,36 +39,15 @@ var extractParamsFromRequest = function(accesspattern, req){
 	let params = []
 
 	if(!accesspattern.isAuthPattern){
-
-		const fetchFromQuery = (paramName) => {
-			return req.query[paramName] 
-			? req.query[paramName] 
-			: paramsDefered.reject(new Error(`Parameter ${paramName} not found in request.query object.`))
-		}
-
-		const fetchFromBody = (paramName) => {
-			return req.body[paramName] 
-			? req.body[paramName] 
-			: paramsDefered.reject(new Error(`Parameter ${paramName} not found in request.body object.`))
-		}
-
 		let paramNames = accesspattern.params
-		
 
 		paramNames.forEach( (paramName) => {
-			let paramValue = accesspattern.method.toUpperCase() == "GET" ? fetchFromQuery(paramName) : fetchFromBody(paramName)
-			params.push(paramValue)
+			let paramValue = accesspattern.method.toUpperCase() == "GET" ? fetchFromQuery(req, paramName) : fetchFromBody(req, paramName)
+			params.push(paramName == 'email' ? paramValue.toLowerCase() : paramValue)
 		})
 
 	} else{
-
-		const fetchAuthFromHeaders = () => {
-			return req.headers.authorization 
-			? decodeBase64Auth(req.headers.authorization.split(' ')[1])
-			: paramsDefered.reject(new Error(`Authorization not provided in headers!`))
-		}
-
-		params = fetchAuthFromHeaders()
+		params = fetchAuthFromHeaders(req)
 	}
 
 	paramsDefered.resolve(params)
